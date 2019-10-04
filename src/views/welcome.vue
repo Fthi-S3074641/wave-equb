@@ -8,9 +8,8 @@
           @click.stop="drawer = !drawer"
           class="hidden-md-and-up"
         ></v-app-bar-nav-icon>
-        <v-toolbar-title class="headline flex-grow-1" :to="'/'">
-             Wave Equb <small> <v-text-field label="Wave Equb" placeholder="Search" outlined append-icon="mdi-magnify" color="primary darken" autofocus clearable v-model="searchString" :loading="true" >
-          </v-text-field> </small>
+        <v-toolbar-title class="headline flex-grow-1 font-weight-light" :to="'/'">
+            New User 
           </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -20,15 +19,20 @@
           :key="index"
           :to="it.link" text exact class="elevation-0"> {{ it.text}} 
           </v-btn>
-          <v-btn text exact :to="'/welcome'"> Comments </v-btn>
+   
         </v-toolbar-items>
       </v-app-bar>
       <!-- End of app toolbar -->
 
       <!-- Start of mobile side menu -->
-      <v-navigation-drawer :clipped="true" class="elevation-0"   v-model="drawer" left >
+      <v-navigation-drawer app class="elevation-0"   v-model="drawer" left >
         <!-- Menu title -->
- 
+         <v-app-bar flat>
+          <v-list>
+            <v-subheader class="headline" :to="'/'"> Wave Equb </v-subheader>
+          </v-list>
+        </v-app-bar>
+        <v-divider></v-divider>
         <!-- Menu Links -->
         <v-list>
           <v-list-item-group v-model="item" color="primary">
@@ -43,14 +47,6 @@
           <v-list-item-content>
              <v-list-item-title >{{item.text}}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-        <v-list-item :to="'/welcome'">
-          <v-list-item-icon>
-            <v-icon color="red" v-text="'mdi-heart'"> </v-icon>
-              <v-list-item-content>
-                <v-list-item-title>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comment </v-list-item-title>
-              </v-list-item-content>
-          </v-list-item-icon>
         </v-list-item>
       </v-list-item-group>
         </v-list>
@@ -74,8 +70,7 @@ export default {
             item: 1,
             items: [
                 { text: 'New User', icon: 'mdi-plus', link: '/newUser' },
-                { text: 'Dashboard', icon: 'mdi-folder-edit-outline', link: '/dashboard' },
-                { text: 'Liqah', icon: 'mdi-collapse-all', link: '/liqah' }
+                { text: 'Dashboard', icon: 'mdi-folder-edit-outline', link: '/dashboard' }
             ],
             searchString: '',
             e6: 1,
