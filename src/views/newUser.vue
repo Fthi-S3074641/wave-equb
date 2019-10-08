@@ -1,4 +1,7 @@
 <template>
+<v-app>
+<Header :head="true" />
+
       <v-row justify="center">
         <v-col cols="12" sm="10" md="8" lg="6">
 
@@ -58,9 +61,12 @@
       </v-card>
       </v-col>
       </v-row>
+      </v-app>
 </template>
 <script>
 import etdate from 'ethiopic-date'
+import Header from './../components/header'
+
 export default {
     data(){
         return {
@@ -76,8 +82,8 @@ export default {
             formHasErrors: false
         }
     },
-    methods: {
-
+    components: {
+      Header
     },
 computed: {
         getLink() {

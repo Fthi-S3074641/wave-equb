@@ -1,6 +1,6 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
+  <v-row class="fill-height" justify="center">
+    <v-col cols="12" sm="10" md="8" lg="12">
       <v-sheet height="64">
         <v-toolbar flat color="white">
           <v-btn outlined class="mr-4" @click="setToday">
@@ -38,12 +38,10 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <div class="flex-grow-1" style="padding-left: 15px;"> &nbsp;
-            <v-text-field label="Wave Equb" placeholder="Search"  append-icon="mdi-magnify" color="primary darken"  clearable v-model="searchString"  >
-          </v-text-field></div>
 
         </v-toolbar>
       </v-sheet>
+
       <v-sheet height="600">
         <v-calendar
           ref="calendar"
@@ -63,7 +61,7 @@
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
-          full-width
+          
           offset-x
         >
           <v-card

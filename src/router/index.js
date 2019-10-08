@@ -3,7 +3,7 @@ import Vrouter from 'vue-router'
 
 import welcome from './../views/welcome'
 import newUser from './../views/newUser'
-import dashboard from './../components/cal'
+import dashboard from './../views/dashboard'
 
 Vue.use(Vrouter)
 
@@ -16,18 +16,17 @@ export default new Vrouter({
             path: '/',
             name: '/home',
             component: welcome,
-            children: [
-                {
-                    path: '/newUser',
-                    name: '/newUser',
-                    component: newUser
-                },
-                {
-                    path: '/dashboard',
-                    name: '/dashborad',
-                    component: dashboard
-                }
-            ]
+        },
+        {
+            path: '/newUser',
+            name: '/newUser',
+            component: newUser
+        },
+        {
+            path: '/dashboard',
+            name: '/dashborad',
+            component: dashboard
+ 
         },
         {
             path: '/welcome',
