@@ -141,7 +141,7 @@
           name: 'Large Event',
           details: 'This starts in the middle of an event and spans over multiple events',
           start: '2018-12-31',
-          end: '2019-01-04',
+          end: '2019-01-14',
           color: 'deep-purple',
         },
         {
