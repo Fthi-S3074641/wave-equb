@@ -65,7 +65,6 @@ export default {
             item: 1,
             items: [
                 { text: 'New User', icon: 'mdi-plus', link: '/newUser' },
-                { text: 'Monitor', icon: 'mdi-folder-edit-outline', link: '/monitor' },
                 { text: 'Dashboard', icon: 'mdi-folder-edit-outline', link: '/dashboard' }
               ],
             searchString: '',

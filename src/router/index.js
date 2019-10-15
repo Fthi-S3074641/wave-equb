@@ -4,8 +4,6 @@ import Vrouter from 'vue-router'
 import welcome from './../views/welcome'
 import newUser from './../views/newUser'
 import dashboard from './../views/dashboard'
-import monitor from './../views/monitor'
-// import monitor from './../components/monitor'
 
 Vue.use(Vrouter)
 

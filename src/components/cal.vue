@@ -110,11 +110,11 @@
       selectedElement: null,
       selectedOpen: false,
       events: [ {
-              name: 'this.iname',
-              details: 'parseInt(this.iphone)',
+              name: 'Tewhasom',
+              details: 'This is a sample event of unpaid deal',
               start: '2019-10-01',
               end: '2019-10-30',
-              color: 'grey darken-1',
+              color: 'grey darken-2',
             }],
     }),
     computed: {
