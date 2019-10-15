@@ -121,7 +121,7 @@ export default {
             imoney: parseInt(this.imoney),
             istart: this.istart,
             imonth: {
-              name: this.iname,
+              name: this.iname + ' ' + this.istart,
               details: `Not paid: ${parseInt(this.imoney)}`,
               start: this.istart,
               end: this.iend,

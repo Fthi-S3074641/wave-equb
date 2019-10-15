@@ -55,9 +55,7 @@
       </v-navigation-drawer>
       <!-- End of mobile side menu -->
     </nav>
-    <v-content>
     <Calnd :finder="searchString"/>
-    </v-content>
     </v-app>
 </template>
 
