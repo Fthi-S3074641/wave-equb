@@ -4,6 +4,8 @@ import Vrouter from 'vue-router'
 import welcome from './../views/welcome'
 import newUser from './../views/newUser'
 import dashboard from './../views/dashboard'
+import monitor from './../views/monitor'
+// import monitor from './../components/monitor'
 
 Vue.use(Vrouter)
 
@@ -25,13 +27,19 @@ export default new Vrouter({
         {
             path: '/dashboard',
             name: '/dashborad',
-            component: dashboard
+            component: dashboard,
+            props: true
  
         },
         {
             path: '/welcome',
             name: '/welcome',
             component: welcome
+        },
+        {
+            path: '/monitor',
+            name: '/monitor',
+            component: monitor
         }
     ],
     mode: 'history'

@@ -13,6 +13,8 @@
             <v-icon small>mdi-chevron-right</v-icon>
           </v-btn>
           <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+          <div class="flex-grow-1" />
           <v-menu style="padding-left: 15px;" bottom right>
             <template v-slot:activator="{ on }">
               <v-btn
@@ -38,7 +40,6 @@
               </v-list-item>
             </v-list>
           </v-menu>
-
         </v-toolbar>
       </v-sheet>
 
@@ -47,58 +48,43 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="events"
+          :events="coreEvents"
           :event-color="getEventColor"
-          :event-margin-bottom="3"
+          :event-height="50"
           :now="today"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
           @change="updateRange"
-        ></v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          
-          offset-x
+          @click:day="showDay"
         >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
+        </v-calendar>
+
+        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-y >
+          <v-card color="grey lighten-4" min-width="350px" flat >
+            <v-toolbar :color="selectedEvent.color" dark>
               <v-btn icon>
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <div class="flex-grow-1"></div>
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </v-toolbar>
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <div class="flex-grow-1"></div>
+                <v-btn icon>
+                  <v-icon>mdi-heart</v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </v-toolbar>
             <v-card-text>
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
+              <v-btn text color="secondary" @click="selectedOpen = false" > Cancel  </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
+
       </v-sheet>
     </v-col>
   </v-row>
@@ -107,9 +93,10 @@
 
 <script>
   export default {
+    props: ['finder'],
     data: () => ({
-      today: '2019-01-01',
-      focus: '2019-01-01',
+      today: '2019-10-15',
+      focus: '2019-10-15',
       type: 'month',
       typeToLabel: {
         month: 'Month',
@@ -122,132 +109,13 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [
-        {
-          name: 'Vacation',
-          details: 'Going to the beach!',
-          start: '2018-12-29',
-          end: '2019-01-01',
-          color: 'blue',
-        },
-        {
-          name: 'Meeting',
-          details: 'Spending time on how we do not have enough time',
-          start: '2019-01-07 09:00',
-          end: '2019-01-07 09:30',
-          color: 'indigo',
-        },
-        {
-          name: 'Large Event',
-          details: 'This starts in the middle of an event and spans over multiple events',
-          start: '2018-12-31',
-          end: '2019-01-14',
-          color: 'deep-purple',
-        },
-        {
-          name: '3rd to 7th',
-          details: 'Testing',
-          start: '2019-01-03',
-          end: '2019-01-07',
-          color: 'cyan',
-        },
-        {
-          name: 'Big Meeting',
-          details: 'A very important meeting about nothing',
-          start: '2019-01-07 08:00',
-          end: '2019-01-07 11:30',
-          color: 'red',
-        },
-        {
-          name: 'Another Meeting',
-          details: 'Another important meeting about nothing',
-          start: '2019-01-07 10:00',
-          end: '2019-01-07 13:30',
-          color: 'brown',
-        },
-        {
-          name: '7th to 8th',
-          start: '2019-01-07',
-          end: '2019-01-08',
-          color: 'blue',
-        },
-        {
-          name: 'Lunch',
-          details: 'Time to feed',
-          start: '2019-01-07 12:00',
-          end: '2019-01-07 15:00',
-          color: 'deep-orange',
-        },
-        {
-          name: '30th Birthday',
-          details: 'Celebrate responsibly',
-          start: '2019-01-03',
-          color: 'teal',
-        },
-        {
-          name: 'New Year',
-          details: 'Eat chocolate until you pass out',
-          start: '2019-01-01',
-          end: '2019-01-02',
-          color: 'green',
-        },
-        {
-          name: 'Conference',
-          details: 'The best time of my life',
-          start: '2019-01-21',
-          end: '2019-01-28',
-          color: 'grey darken-1',
-        },
-        {
-          name: 'Hackathon',
-          details: 'Code like there is no tommorrow',
-          start: '2019-01-30 23:00',
-          end: '2019-02-01 08:00',
-          color: 'black',
-        },
-        {
-          name: 'event 1',
-          start: '2019-01-14 18:00',
-          end: '2019-01-14 19:00',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 2',
-          start: '2019-01-14 18:00',
-          end: '2019-01-14 19:00',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 5',
-          start: '2019-01-14 18:00',
-          end: '2019-01-14 19:00',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 3',
-          start: '2019-01-14 18:30',
-          end: '2019-01-14 20:30',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 4',
-          start: '2019-01-14 19:00',
-          end: '2019-01-14 20:00',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 6',
-          start: '2019-01-14 21:00',
-          end: '2019-01-14 23:00',
-          color: '#4285F4',
-        },
-        {
-          name: 'event 7',
-          start: '2019-01-14 22:00',
-          end: '2019-01-14 23:00',
-          color: '#4285F4',
-        },
-      ],
+      events: [ {
+              name: 'this.iname',
+              details: 'parseInt(this.iphone)',
+              start: '2019-10-01',
+              end: '2019-10-30',
+              color: 'grey darken-1',
+            }],
     }),
     computed: {
       title () {
@@ -283,12 +151,36 @@
           timeZone: 'UTC', month: 'long',
         })
       },
+      getEvents() {
+        return this.$store.state.allItems.map(fruit => fruit.imonth)
+      },
+      coreEvents() {
+        var articles_array = this.events
+         var searchString = this.finder;
+
+            if(!searchString){
+                return articles_array;
+            }
+
+            searchString = searchString.trim().toLowerCase();
+        articles_array = articles_array.filter(function(item){
+                if(item.name.toLowerCase().indexOf(searchString) !== -1){
+                    return item;
+                }
+            })
+            // Return an array with the filtered data.
+            return articles_array
+      },
     },
     mounted () {
       this.$refs.calendar.checkChange()
     },
     methods: {
+      showDay({nativeEvent, day}){
+        console.log(nativeEvent)
+      },
       viewDay ({ date }) {
+        console.log(date)
         this.focus = date
         this.type = 'day'
       },
@@ -305,6 +197,7 @@
         this.$refs.calendar.next()
       },
       showEvent ({ nativeEvent, event }) {
+        console.log(event)
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
@@ -331,5 +224,8 @@
           : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
       },
     },
+    created() {
+      this.events.push(...this.getEvents)
+    }
   }
 </script>
