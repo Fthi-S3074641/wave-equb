@@ -35,11 +35,6 @@ export default new Vrouter({
             path: '/welcome',
             name: '/welcome',
             component: welcome
-        },
-        {
-            path: '/monitor',
-            name: '/monitor',
-            component: monitor
         }
     ],
     mode: 'history'
