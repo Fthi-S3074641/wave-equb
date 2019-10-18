@@ -295,6 +295,8 @@
     },
     created() {
       this.loadEvents
+      this.today = new Date().toJSON().slice(0,10);
+      this.focus = new Date().toJSON().slice(0,10);
     }
   }
 </script>

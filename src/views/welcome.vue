@@ -17,7 +17,11 @@ export default {
     },
     components: {
       Header
-    }
+    },
+    created() {
+      var nowDate = new Date();
+      var SimpleDateFormat = new Date().toJSON().slice(0,10);
+    },
  
 }
 </script>
