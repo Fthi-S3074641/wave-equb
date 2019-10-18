@@ -16,6 +16,10 @@ export const mutations = {
   [types.SET_USER] (state, payload) {
     state.fullName = payload.fullName
     state.phoneNumber = payload.phoneNumber
+  },
+
+  [types.UPDATE_ACCOUNT] (state, payload) {
+    Object.assign(state.allItems[payload.index], { imonth: payload.imonth });
   }
 
 }

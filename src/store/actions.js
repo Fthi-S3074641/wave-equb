@@ -15,3 +15,7 @@ export const fromFile = ({commit}, shuqbara) => {
 export const setUser = ({commit}, newUser) => {
   commit(types.SET_USER, newUser)
 }
+
+export const updateAccount = ({commit}, newUpdate) => {
+  commit(types.UPDATE_ACCOUNT, newUpdate)
+}

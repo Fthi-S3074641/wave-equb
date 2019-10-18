@@ -6,15 +6,7 @@ import * as actions from './actions'
 Vue.use(Vuex)
 
 const state = {
-    allItems: [],
-    currentItem: {},
-    fullName: null,
-    phoneNumber: null,
-    title: {
-        mainTitle: 'Shuqbara',
-        subTitle: 'Inventory',
-        useTitle: true
-    }
+    allItems: []
 }
 
 export default new Vuex.Store({

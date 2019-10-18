@@ -1,6 +1,6 @@
 <template>
     <v-app>
-            <nav>
+      <nav>
       <!-- Start of app toolbar style="background: rgba(0,0,0,0);"-->
       <v-app-bar app class="elevation-0">
         <v-app-bar-nav-icon
@@ -8,12 +8,13 @@
           class="hidden-md-and-up"
         ></v-app-bar-nav-icon>
         <v-toolbar-title class="headline flex-grow-1" style="padding-top: 20px;">
+          <span v-if="!clickSearch" font-weight-light :to="'/'"> Wave Foundation </span>
            <v-container fluid>
-            <v-text-field label="Wave Equb" placeholder="Search"  append-icon="mdi-magnify" color="primary darken"  clearable v-model="searchString"  >
+            <v-text-field v-if="clickSearch" label="Wave Equb" placeholder="Search"  color="primary darken"  clearable v-model="searchString"  >
           </v-text-field>
           </v-container>
           </v-toolbar-title>
-
+          <v-btn icon> <v-icon @click="clickSearch = !clickSearch"> mdi-magnify </v-icon> </v-btn>
  
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn
@@ -66,10 +67,12 @@ export default {
     data() {
         return {
             drawer: false,
+            clickSearch: false,
             item: 1,
             items: [
-                { text: 'New User', icon: 'mdi-plus', link: '/newUser' },
-                { text: 'Dashboard', icon: 'mdi-folder-edit-outline', link: '/dashboard' }
+                { text: 'Dashboard', icon: 'mdi-folder-edit-outline', link: '/dashboard' },
+                { text: 'Users', icon: 'mdi-folder-edit-outline', link: '/allUsers'},
+                { text: 'New User', icon: 'mdi-plus', link: '/newUser' }
               ],
             searchString: '',
         }

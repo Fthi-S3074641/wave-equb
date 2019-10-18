@@ -3,6 +3,7 @@ import Vrouter from 'vue-router'
 
 import welcome from './../views/welcome'
 import newUser from './../views/newUser'
+import allUsers from './../views/allUsers'
 import dashboard from './../views/dashboard'
 
 Vue.use(Vrouter)
@@ -30,9 +31,10 @@ export default new Vrouter({
  
         },
         {
-            path: '/welcome',
-            name: '/welcome',
-            component: welcome
+            path: '/allUsers',
+            name: '/allUsers',
+            component: allUsers,
+            props: true
         }
     ],
     mode: 'history'

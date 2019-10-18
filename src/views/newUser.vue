@@ -14,9 +14,11 @@
             <v-row align="center" justify="center" >
                 <v-btn text @click="$router.go(-1)">Cancel</v-btn>
                   <div class="flex-grow-1"></div>
-                <v-btn text color="primary" :disabled="iname == null" @click="e6 = 2">Continue</v-btn>
+                <v-btn text color="primary" :disabled="iname == null || (nameExist !== -1)" @click="e6 = 2">Continue</v-btn>
             </v-row>
-            <v-text-field v-on:keyup.enter="e6 = 2" outlined placeholder="ID of the new item" clearable  required ref="iname" v-model="iname" :rules="[() => !!iname || 'This field is required']" ></v-text-field>
+            <v-text-field v-on:keyup.enter="e6 = 2" outlined placeholder="ID of the new item" clearable  required ref="iname" v-model="iname" :rules="[() => !!iname || 'Name must be unique']" ></v-text-field>
+
+                <p class="red--text" v-if="(nameExist !== -1)"> Duplicated name. Make it unique </p>
         </v-stepper-content>
 
         <v-stepper-step :complete="e6 > 2" step="2">Phone</v-stepper-step>
@@ -75,7 +77,7 @@
             <v-row align="center" justify="center">
                 <v-btn text @click="$router.go(-1)">Exit</v-btn>
                 <div class="flex-grow-1"></div>
-                <v-btn class="primary" :disabled="!formisValid" v-if="formisValid" @click="submit" >Register</v-btn>
+                <v-btn class="primary" :disabled="(nameExist !== -1)" v-if="valueInserted" @click="submit" >Register</v-btn>
                 <div style="margin-right: 30px;"></div>
               </v-row>
           </v-stepper-content>
@@ -95,10 +97,10 @@ export default {
         return {
             menu: false,
             menu2: false,
-            e6: 4,
-            iname: 'null',
-            iphone: 899,
-            imoney: 66,
+            e6: 1,
+            iname: null,
+            iphone: null,
+            imoney: null,
             istart: null,
             iend: null,
             formHasErrors: false
@@ -120,15 +122,16 @@ export default {
             iphone: parseInt(this.iphone),
             imoney: parseInt(this.imoney),
             istart: this.istart,
-            imonth: {
+            iend: this.iend,
+            imonth: [{
               name: this.iname + ' ' + this.istart,
-              details: `Not paid: ${parseInt(this.imoney)}`,
+              details: this.iname,
               start: this.istart,
               end: this.iend,
               color: 'grey darken-1',
-            }
+              paid: false
+            }]
           }
-          console.log(unew)
           this.$store.dispatch('addItem', unew).then(()=> {
                 this.$router.push('/dashboard')
               });        
@@ -167,14 +170,18 @@ computed: {
             iend: this.iend,
             }
       },
-      formisValid() {
+      nameExist() {
+        return this.$store.state.allItems.map(function(e) {
+              return e.iname;}).indexOf(this.iname);
+      },
+      valueInserted() {
         return (
           this.iname !== null &&
           this.istart !== null &&
           this.imoney >= 1 &&
           this.iphone !== null &&
           this.iend !== null
-        )
+          )
       }
     }
 }

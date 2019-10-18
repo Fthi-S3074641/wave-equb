@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import etdate from 'ethiopic-date'
 import Header from './../components/header'
 export default {
     data(){

@@ -1,7 +1,7 @@
-<template >
-  <v-row class="fill-height" justify="center">
+<template class="transparent">
+  <v-row class=" fill-height" justify="center">
     <v-col cols="12" sm="10" md="8" lg="12">
-      <v-sheet height="64" class="transparent elevation-0">
+      <v-sheet height="64" class="transparent">
         <v-toolbar flat color="white">
           <v-btn outlined class="mr-4" @click="setToday">
             Today
@@ -115,14 +115,8 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [ {
-              name: 'Tewhasom 2019-10-01',
-              details: 'This is a sample event of unpaid deal',
-              start: '2019-10-01',
-              end: '2019-10-30',
-              color: 'grey darken-2',
-            }],
-            progress: false
+      events: [],
+      progress: false
     }),
     computed: {
       title () {
@@ -159,7 +153,12 @@
         })
       },
       getEvents() {
-        return this.$store.state.allItems.map(fruit => fruit.imonth)
+        var evts = []
+         this.$store.state.allItems.map(function(fruit){
+                evts.push(...fruit.imonth)
+                return evts;
+            })
+        return evts
       },
       coreEvents() {
         var articles_array = this.events
@@ -191,7 +190,18 @@
       getIndex(){
         return this.events.map(function(e) {
               return e.name;}).indexOf(this.selectedEvent.name);
-      }
+      },
+      loadEvents() {
+        this.events = []
+        this.events.push(...this.getEvents)
+      },
+      getAll() {
+        return this.$store.state.allItems
+      },
+      locate() {
+        return this.getAll.map(function(e) {
+              return e.iname;}).indexOf(this.selectedEvent.details);
+      } 
     },
     mounted () {
       this.$refs.calendar.checkChange()
@@ -228,11 +238,17 @@
         }
         const ind = this.getIndex
         this.events.splice(ind, 1)
-        this.events.push(eventPast)
-        this.events.push(eventFuture)
-        this.events.push(newEvent)
+        var timonth = []
+        timonth.push(eventPast)
+        timonth.push(eventFuture)
+        timonth.push(newEvent)
+        var user = this.$store.state.allItems[this.locate]
+        console.log(this.locate)
+        this.$store.dispatch('updateAccount', {index: this.locate, imonth: timonth})
         this.selectedOpen = false
         this.progress = false
+        this.loadEvents
+        console.log(this.getAll)
       },
       getEventColor (event) {
         return event.color
@@ -278,7 +294,7 @@
       },
     },
     created() {
-      this.events.push(...this.getEvents)
+      this.loadEvents
     }
   }
 </script>
