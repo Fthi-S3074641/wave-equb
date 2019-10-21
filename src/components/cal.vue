@@ -61,36 +61,11 @@
         >
         </v-calendar>
 
-        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-y >
-          <v-card color="grey lighten-4" min-width="350px" flat >
-            <v-toolbar :color="selectedEvent.color" dark>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                <div class="flex-grow-1"></div>
-                <v-btn icon>
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </v-toolbar>
-            <v-card-text>
-              <v-btn v-if="!progress" color="green" @click="progress = true"> Paid</v-btn>
-                <v-scroll-x-transition>
-                  <v-icon
-                    v-if="progress"
-                    color="success"
-                    large
-                  >
-                    mdi-check
-                  </v-icon>
-                </v-scroll-x-transition>
-              <span v-html="selectedEvent.details"></span>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false" > Cancel  </v-btn>
-              <div class="flex-grow-1"> </div>
-              <v-btn color="primary" :disabled="!progress" @click="updateAccount(selectedEvent,focus)"> Update</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-
+        <v-row justify="center">
+          <v-col cols="12" sm="6" >
+              <Pay v-if="selectedOpen" :locate="locate" :ebent="selectedEvent" :focus="focus" :selectedElement="selectedElement" />
+          </v-col>
+        </v-row>
       </v-sheet>
     </v-col>
   </v-row>
@@ -98,26 +73,77 @@
 
 
 <script>
+import Pay from './../components/inner/pay'
   export default {
     props: ['finder'],
-    data: () => ({
+    data() {
+      return {
       today: '2019-10-15',
       focus: '2019-10-15',
       type: 'month',
-      typeToLabel: {
-        month: 'Month',
-        week: 'Week',
-        day: 'Day',
-        '4day': '4 Days',
-      },
+      typeToLabel: {month: 'Month',week: 'Week',day: 'Day','4day': '4 Days',},
       start: null,
       end: null,
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [],
-      progress: false
-    }),
+      events: []
+      }
+    },
+    methods: {
+      viewDay ({ date }) {
+        this.focus = date
+        this.type = 'day'
+      },
+    
+      getEventColor (event) {
+        if(event.paid) {return 'green darken-1'}
+        else {return 'grey darken-1'}
+        // return event.color
+      },
+      setToday () {
+        this.focus = this.today
+      },
+      prev () {
+        this.$refs.calendar.prev()
+      },
+      next () {
+        this.$refs.calendar.next()
+      },
+      showEvent ({ nativeEvent, event, date }) {
+        if(this.type === 'day')
+        {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          setTimeout(() => this.selectedOpen = true, 10)
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          setTimeout(open, 10)
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+        }
+
+      },
+      updateRange ({ start, end }) {
+        // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
+        this.start = start
+        this.end = end
+      },
+      nth (d) {
+        return d > 3 && d < 21
+          ? 'th'
+          : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
+      },
+    },
+    components: {
+      Pay
+    },   
     computed: {
       title () {
         const { start, end } = this
@@ -177,20 +203,6 @@
             // Return an array with the filtered data.
             return articles_array
       },
-      getPrevious() {
-        var date = this.focus.toString()
-        date = parseInt(date.substring(8,10)) - parseInt(1)
-         return date
-      },
-      getNext() {
-        var date = this.focus.toString()
-        date = parseInt(date.substring(8,10)) + parseInt(1)
-         return date
-      },
-      getIndex(){
-        return this.events.map(function(e) {
-              return e.name;}).indexOf(this.selectedEvent.name);
-      },
       loadEvents() {
         this.events = []
         this.events.push(...this.getEvents)
@@ -200,103 +212,19 @@
       },
       locate() {
         return this.getAll.map(function(e) {
-              return e.iname;}).indexOf(this.selectedEvent.details);
-      } 
-    },
-    mounted () {
-      this.$refs.calendar.checkChange()
-    },
-    methods: {
-      viewDay ({ date }) {
-        this.focus = date
-        this.type = 'day'
+              return e.iname;}).indexOf(this.selectedEvent.name);
       },
-      updateAccount(ev, dt)  {
-        var newEnd = this.getPrevious
-        var newStart = this.getNext
-        const eventPast = {
-              name: ev.name + ' '+ev.start,
-              details: ev.details,
-              start: ev.start,
-              end: `${this.focus.toString().substring(0,4)}-${this.focus.toString().substring(5,7)}-${newEnd}`,
-              color: ev.color,
-            }
-        const kstart = `${this.focus.toString().substring(0,4)}-${this.focus.toString().substring(5,7)}-${newStart}`
-        const eventFuture = {
-              name: ev.name+ ' '+kstart,
-              details: ev.details,
-              start: kstart,
-              end: ev.end,
-              color: ev.color,
-            }
-        const newEvent = {
-              name: ev.name+ ' '+dt,
-              details: 'Paid',
-              start: dt,
-              end: dt,
-              color: 'green',
-        }
-        const ind = this.getIndex
-        this.events.splice(ind, 1)
-        var timonth = []
-        timonth.push(eventPast)
-        timonth.push(eventFuture)
-        timonth.push(newEvent)
-        var user = this.$store.state.allItems[this.locate]
-        console.log(this.locate)
-        this.$store.dispatch('updateAccount', {index: this.locate, imonth: timonth})
-        this.selectedOpen = false
-        this.progress = false
-        this.loadEvents
-        console.log(this.getAll)
-      },
-      getEventColor (event) {
-        return event.color
-      },
-      setToday () {
-        this.focus = this.today
-      },
-      prev () {
-        this.$refs.calendar.prev()
-      },
-      next () {
-        this.$refs.calendar.next()
-      },
-      showEvent ({ nativeEvent, event, date }) {
-        if(this.type === 'day')
-        {
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          setTimeout(() => this.selectedOpen = true, 10)
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          setTimeout(open, 10)
-        } else {
-          open()
-        }
-
-        nativeEvent.stopPropagation()
-        }
-
-      },
-      updateRange ({ start, end }) {
-        // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
-        this.start = start
-        this.end = end
-      },
-      nth (d) {
-        return d > 3 && d < 21
-          ? 'th'
-          : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
-      },
+      getStatus() {
+        return this.$store.state.paidSuccessful
+      },  
     },
     created() {
       this.loadEvents
       this.today = new Date().toJSON().slice(0,10);
       this.focus = new Date().toJSON().slice(0,10);
+    },
+    mounted () {
+      this.$refs.calendar.checkChange()
     }
   }
 </script>

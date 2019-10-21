@@ -19,3 +19,7 @@ export const setUser = ({commit}, newUser) => {
 export const updateAccount = ({commit}, newUpdate) => {
   commit(types.UPDATE_ACCOUNT, newUpdate)
 }
+
+export const updateDetails = ({commit}, newDetails) => {
+  commit(types.UPDATE_DETAILS, newDetails)
+}

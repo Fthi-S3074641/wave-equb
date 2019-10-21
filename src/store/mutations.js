@@ -10,6 +10,7 @@ export const mutations = {
   },
 
   [types.FROM_FILE] (state, payload) {
+    state.allItems = []
     state.allItems.push(...payload)
   },
 
@@ -20,6 +21,11 @@ export const mutations = {
 
   [types.UPDATE_ACCOUNT] (state, payload) {
     Object.assign(state.allItems[payload.index], { imonth: payload.imonth });
+  },
+
+  [types.UPDATE_DETAILS] (state, payload) {
+    Object.assign(state.allItems[payload.index], {iname: payload.iname, iphone: payload.iphone, imoney: payload.imoney})
+    state.paidSuccessful = true
   }
 
 }

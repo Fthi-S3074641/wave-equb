@@ -79,6 +79,9 @@ export default {
     },
     components: {
         Calnd
-    }
+    },
+    created() {
+      this.$store.dispatch('fromFile', JSON.parse(window.localStorage.getItem('maebel')))
+    },
 }
 </script>

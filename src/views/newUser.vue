@@ -124,15 +124,14 @@ export default {
             istart: this.istart,
             iend: this.iend,
             imonth: [{
-              name: this.iname + ' ' + this.istart,
-              details: this.iname,
+              name: this.iname,
               start: this.istart,
               end: this.iend,
-              color: 'grey darken-1',
               paid: false
             }]
           }
           this.$store.dispatch('addItem', unew).then(()=> {
+            window.localStorage.setItem('maebel', JSON.stringify(this.getAll))
                 this.$router.push('/dashboard')
               });        
       }
@@ -141,6 +140,9 @@ export default {
       Header
     },
 computed: {
+  getAll() {
+    return this.$store.state.allItems
+  },
   getEnd() {
     console.log(this.getDate)
     const nEnd = parseInt(this.getDate) + parseInt(29)

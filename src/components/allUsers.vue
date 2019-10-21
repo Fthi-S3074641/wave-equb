@@ -23,7 +23,8 @@
  </v-row>
 </template>
 <script>
-import Display from './../components/display'
+import Display from './../components/inner/display'
+
 export default {
     data() {
         return {
@@ -38,6 +39,7 @@ export default {
             return this.$store.state.allItems
         }
     }
+
 }
 </script>
 

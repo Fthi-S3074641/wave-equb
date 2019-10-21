@@ -16,8 +16,7 @@ export default {
     }
   },
   mounted() {
-    // const shuqbara = JSON.parse(window.localStorage.getItem('shuqbara'))
-    // this.$store.dispatch('fromFile', shuqbara)
+      this.$store.dispatch('fromFile', JSON.parse(window.localStorage.getItem('maebel')))
   }
 
 };

@@ -80,6 +80,9 @@ export default {
     },
     components: {
         Users
-    }
+    },
+  mounted() {
+      this.$store.dispatch('fromFile', JSON.parse(window.localStorage.getItem('maebel')))
+  }
 }
 </script>

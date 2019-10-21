@@ -6,7 +6,8 @@ import * as actions from './actions'
 Vue.use(Vuex)
 
 const state = {
-    allItems: []
+    allItems: [],
+    paidSuccessful: false
 }
 
 export default new Vuex.Store({
