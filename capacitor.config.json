@@ -1,0 +1,7 @@
+{
+  "appId": "com.dotftu.maebel",
+  "appName": "Maebel",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist"
+}
